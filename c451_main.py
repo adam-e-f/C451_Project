@@ -123,6 +123,8 @@ class Deep_Neural_Network(nn.Module):
 
         with open("out.txt", "a") as file:
 
+            file.write(f'epoch,loss,validation_accuracy\n')
+
             for epoch in range(max_epochs):
                 running_loss = 0.0
                 for i, data in enumerate(train_loader, 0):
@@ -140,8 +142,8 @@ class Deep_Neural_Network(nn.Module):
 
                 val_percent = self.validate(validation_loader)
 
-                # file.write(
-                #    f'epoch: {epoch + 1}, loss: {running_loss / number_of_batches:.4e}, val accuracy: {val_percent:.2f}\n')
+                if (epoch + 1) % 10 == 0 or epoch == 0:
+                    file.write(f'{epoch + 1},{running_loss / len(train_loader):.4e},{val_percent:.2f}\n')
 
                 print('[%d, %5d] loss: %.4e, validation accuracy %.3f' % (
                     epoch + 1, i + 1, running_loss / number_of_batches, val_percent))
@@ -202,6 +204,8 @@ class Convolutional_Neural_Network(nn.Module):
 
         with open("out.txt", "a") as file:
 
+            file.write(f'epoch,loss,validation_accuracy\n')
+
             for epoch in range(max_epochs):
                 running_loss = 0.0
                 for i, data in enumerate(train_loader, 0):
@@ -216,9 +220,9 @@ class Convolutional_Neural_Network(nn.Module):
                     running_loss += loss.item()
 
                 val_percent = self.validate(validation_loader)
-
-                # file.write(
-                #    f'epoch: {epoch + 1}, loss: {running_loss / len(train_loader):.4e}, val accuracy: {val_percent:.2f}\n')
+                
+                if (epoch + 1) % 10 == 0 or epoch == 0:
+                    file.write(f'{epoch + 1},{running_loss / len(train_loader):.4e},{val_percent:.2f}\n')
 
                 print('[%d, %5d] loss: %.4e, validation accuracy %.3f' % (
                     epoch + 1, i + 1, running_loss / len(train_loader), val_percent))
